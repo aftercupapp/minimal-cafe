@@ -100,6 +100,9 @@
         .help-section { margin-bottom: 20px; border-bottom: 2px solid black; padding-bottom: 20px; }
         .key-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px; }
         .key-box { font-weight: bold; background: black; color: white; padding: 0 4px; }
+        
+        .info-block { font-size: 0.8rem; margin-bottom: 15px; line-height: 1.4; }
+        .info-title { font-weight: bold; text-decoration: underline; display: block; margin-bottom: 4px; }
 
         .recipe-row {
             display: flex; justify-content: space-between;
@@ -254,8 +257,60 @@
             #cup-container {
                 transform: scale(0.9);
                 margin: 0 auto 0 auto;
-                left: 15px;
+                left: -10px;
             }
+        }
+
+        #storage-view {
+            background: white;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brew-station {
+            border: 2px solid black;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: #f4f4f4;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .shop-item {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .shop-name { font-weight: bold; font-size: 0.75rem; text-transform: uppercase; }
+        .shop-stock { font-size: 1.2rem; font-weight: 900; margin: 5px 0; }
+        .shop-price { font-size: 0.75rem; }
+        
+        .buy-btn {
+            background: black; color: white; border: none;
+            padding: 5px; font-weight: bold; cursor: pointer;
+            margin-top: 5px; font-family: inherit; font-size: 0.7rem;
+        }
+        .buy-btn:active { opacity: 0.7; }
+        .buy-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .nav-hint {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
         }
 
         nav {
@@ -308,19 +363,36 @@
         
         <button class="btn-full" onclick="navBack()">CLOSE PROFILE</button>
         <button class="btn-full btn-danger" onclick="resetSaveData()">RESET DATA</button>
+        <div style="text-align: center; margin-top: 15px; font-size: 0.7rem; opacity: 0.5;">v0.1.14</div>
     </div>
 
     <div id="help-overlay" class="overlay">
         
         <div class="help-section">
+            <h2 style="text-align: center; text-decoration: underline;">COFFEE KNOWLEDGE</h2>
+            <br>
+            <div class="info-block">
+                <span class="info-title">COLD BREW</span>
+                Coarse coffee grounds steeped in room-temperature or cold water for 12-24 hours. The result is smooth, full-bodied, and has lower acidity than hot coffee.
+            </div>
+            <div class="info-block">
+                <span class="info-title">GOOD ESPRESSO</span>
+                Extracted under high pressure (9 bars). A perfect shot balances acidity, sweetness, and bitterness, topped with a golden-brown foam layer called 'crema'.
+            </div>
+        </div>
+
+        <div class="help-section">
             <h2 style="text-align: center; text-decoration: underline;">CONTROLS</h2>
             <br>
-            <div class="key-row"><span>Dark Roast</span><span class="key-box">1</span></div>
+            <div class="key-row"><span>Light Roast</span><span class="key-box">1</span></div>
             <div class="key-row"><span>Medium Roast</span><span class="key-box">2</span></div>
-            <div class="key-row"><span>Light Roast</span><span class="key-box">3</span></div>
+            <div class="key-row"><span>Dark Roast</span><span class="key-box">3</span></div>
             <div class="key-row"><span>Steamed Milk</span><span class="key-box">M</span></div>
             <div class="key-row"><span>Hot Water</span><span class="key-box">W</span></div>
             <div class="key-row"><span>Milk Foam</span><span class="key-box">F</span></div>
+            <div class="key-row"><span>Batch Brew</span><span class="key-box">B</span></div>
+            <div class="key-row"><span>Cold Brew</span><span class="key-box">K</span></div>
+            <div class="key-row"><span>Tonic Water</span><span class="key-box">N</span></div>
             <div class="key-row"><span>Ice</span><span class="key-box">I</span></div>
             <div class="key-row"><span>Chocolate</span><span class="key-box">C</span></div>
             <div class="key-row"><span>Caramel</span><span class="key-box">A</span></div>
@@ -329,7 +401,7 @@
             <br>
             <div class="key-row"><span>Serve</span><span class="key-box">ENTER</span></div>
             <div class="key-row"><span>Trash Cup</span><span class="key-box">BKSP</span></div>
-            <div class="key-row"><span>Switch View</span><span class="key-box">SPACE</span></div>
+            <div class="key-row"><span>Cycle View</span><span class="key-box">SPACE</span></div>
         </div>
 
         <h2 style="text-align: center; text-decoration: underline;">RECIPES</h2>
@@ -359,17 +431,20 @@
             
             <div id="keyboard-legend">
                 <div class="legend-cat">ROASTS</div>
-                <div class="legend-item">Dark Roast <span class="legend-key">1</span></div>
+                <div class="legend-item">Light Roast <span class="legend-key">1</span></div>
                 <div class="legend-item">Medium Roast <span class="legend-key">2</span></div>
-                <div class="legend-item">Light Roast <span class="legend-key">3</span></div>
+                <div class="legend-item">Dark Roast <span class="legend-key">3</span></div>
                 
                 <div class="legend-cat">BASES</div>
                 <div class="legend-item">Milk <span class="legend-key">M</span></div>
                 <div class="legend-item">Water <span class="legend-key">W</span></div>
                 <div class="legend-item">Foam <span class="legend-key">F</span></div>
+                <div class="legend-item">Batch <span class="legend-key">B</span></div>
+                <div class="legend-item">Cold <span class="legend-key">K</span></div>
                 
                 <div class="legend-cat">ADD-ONS</div>
                 <div class="legend-item">Ice <span class="legend-key">I</span></div>
+                <div class="legend-item">Tonic <span class="legend-key">N</span></div>
                 <div class="legend-item">Choco <span class="legend-key">C</span></div>
                 <div class="legend-item">Caramel <span class="legend-key">A</span></div>
                 
@@ -384,11 +459,31 @@
             </div>
         </section>
 
+        <!-- STORAGE VIEW -->
+        <section id="storage-view" class="hidden">
+            <h2 style="text-align: center; margin-bottom: 15px; text-decoration: underline;">INVENTORY</h2>
+            
+            <div class="brew-station">
+                <h3>COLD BREW STATION</h3>
+                <p id="brew-status" style="font-size: 0.8rem; margin: 5px 0;">Status: Idle</p>
+                <button id="brew-btn" class="btn-full" onclick="handleColdBrew()">START BATCH ($50)</button>
+                <div style="font-size: 0.7rem; margin-top: 5px;">Takes 2 Hours. Yields 10 portions.</div>
+            </div>
+
+            <div class="shop-grid" id="shop-container">
+                <!-- Items populated by JS -->
+            </div>
+            
+            <div class="nav-hint">[SPACE] TO CUSTOMER</div>
+            <div style="height: 30px;"></div>
+        </section>
+
     </div>
 
     <nav>
-        <button id="tab-counter" class="nav-tab active" onclick="goHome()">Customer</button>
+        <button id="tab-counter" class="nav-tab active" onclick="goToCounter()">Customer</button>
         <button id="tab-kitchen" class="nav-tab" onclick="goKitchen()">Kitchen</button>
+        <button id="tab-storage" class="nav-tab" onclick="goStorage()">Storage</button>
     </nav>
 
     <script>
@@ -403,7 +498,10 @@
             'Caramel Macchiato':['Caramel', 'Milk', 'Espresso'],
             'Matcha Latte':     ['Matcha', 'Milk', 'Foam'],
             'Dirty Chai':       ['Chai', 'Espresso', 'Milk'],
-            'Chai Latte':       ['Chai', 'Milk', 'Foam']
+            'Chai Latte':       ['Chai', 'Milk', 'Foam'],
+            'Cold Brew':        ['Ice', 'Cold Brew'],
+            'Batch Brew':       ['Batch Brew'],
+            'Espresso Tonic':   ['Tonic', 'Ice', 'Espresso']
         };
 
         const FACES_NEUTRAL = [
@@ -432,13 +530,34 @@
             "Fifi", "Gigi", "Jojo", "Pippa", "Poppy", "Rosie", "Sasha"
         ];
 
-        const SAVE_KEY = 'minimalCafeSave_v15';
+        const SAVE_KEY = 'minimalCafeSave_v21';
         
+        const SHOP_ITEMS = {
+            'light_beans': { name: 'Light Roast Beans', price: 15, qty: 10 },
+            'med_beans':   { name: 'Medium Roast Beans',   price: 15, qty: 10 },
+            'dark_beans':  { name: 'Dark Roast Beans',  price: 15, qty: 10 },
+            'milk':        { name: 'Steamed Milk', price: 10, qty: 10 },
+            'tonic':       { name: 'Tonic Water', price: 20, qty: 5 },
+            'ice':         { name: 'Ice Cubes',  price: 5,  qty: 20 },
+            'choco':       { name: 'Chocolate Syrup', price: 25, qty: 10 },
+            'caramel':     { name: 'Caramel Syrup', price: 25, qty: 10 },
+            'matcha':      { name: 'Matcha Powder',  price: 30, qty: 10 },
+            'chai':        { name: 'Chai Concentrate',  price: 25, qty: 10 }
+        };
+
         const defaultState = {
-            cash: 0,
+            cash: 50, 
             totalServed: 0,
             totalCorrect: 0,
-            history: []
+            history: [],
+            inventory: {
+                'light_beans': 10, 'med_beans': 10, 'dark_beans': 10,
+                'milk': 10, 'ice': 10, 'tonic': 10, 'choco': 10,
+                'caramel': 10, 'matcha': 10, 'chai': 10,
+                'cold_brew': 10
+            },
+            brewFinishTime: 0, 
+            isBrewing: false
         };
 
         let state = { 
@@ -455,15 +574,15 @@
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    state.cash = parsed.cash || 0;
-                    state.totalServed = parsed.totalServed || 0;
-                    state.totalCorrect = parsed.totalCorrect || 0;
-                    state.history = parsed.history || [];
+                    state = { ...state, ...parsed };
+                    state.inventory = { ...defaultState.inventory, ...(parsed.inventory || {}) };
                 } catch (e) {
                     console.error("Save file corrupted, using defaults");
                 }
             }
             updateCashDisplay();
+            updateShopUI();
+            updateBrewUI();
         }
 
         function saveGame() {
@@ -471,7 +590,10 @@
                 cash: state.cash,
                 totalServed: state.totalServed,
                 totalCorrect: state.totalCorrect,
-                history: state.history
+                history: state.history,
+                inventory: state.inventory,
+                brewFinishTime: state.brewFinishTime,
+                isBrewing: state.isBrewing
             };
             localStorage.setItem(SAVE_KEY, JSON.stringify(dataToSave));
         }
@@ -486,8 +608,10 @@
         const ui = {
             counter: document.getElementById('customer-view'),
             kitchen: document.getElementById('prep-view'),
+            storage: document.getElementById('storage-view'),
             tabCounter: document.getElementById('tab-counter'),
             tabKitchen: document.getElementById('tab-kitchen'),
+            tabStorage: document.getElementById('tab-storage'),
             cup: document.getElementById('cup-container'),
             face: document.getElementById('face'),
             nameTag: document.getElementById('customer-name-tag'),
@@ -498,6 +622,9 @@
             helpOverlay: document.getElementById('help-overlay'),
             recipeList: document.getElementById('recipe-list'),
             historyList: document.getElementById('history-list'),
+            shopContainer: document.getElementById('shop-container'),
+            brewStatus: document.getElementById('brew-status'),
+            brewBtn: document.getElementById('brew-btn'),
             stats: {
                 rank: document.getElementById('stat-rank'),
                 acc: document.getElementById('stat-accuracy'),
@@ -507,12 +634,11 @@
 
         function init() {
             loadGame();
-            // Initialize history state
             history.replaceState({view: 'counter'}, '');
 
             let html = '';
             for(let [name, ingredients] of Object.entries(RECIPES)) {
-                let dispIng = ingredients.map(i => i === 'Espresso' ? 'Espresso (1/2/3)' : i).join(' + ');
+                let dispIng = ingredients.map(i => i === 'Espresso' ? 'Espresso (Any)' : i).join(' + ');
                 html += `
                 <div class="recipe-row">
                     <span><b>${name}</b></span>
@@ -520,23 +646,34 @@
                 </div>`;
             }
             ui.recipeList.innerHTML = html;
+            
+            setInterval(updateBrewUI, 30000); 
+            updateBrewUI();
+            
             nextCustomer();
         }
 
-        // --- NAVIGATION LOGIC ---
-
         function updateView(mode) {
             state.currentView = mode;
+            
+            ui.counter.classList.add('hidden');
+            ui.kitchen.classList.add('hidden');
+            ui.storage.classList.add('hidden');
+            ui.tabCounter.classList.remove('active');
+            ui.tabKitchen.classList.remove('active');
+            ui.tabStorage.classList.remove('active');
+
             if (mode === 'counter') {
                 ui.counter.classList.remove('hidden');
-                ui.kitchen.classList.add('hidden');
                 ui.tabCounter.classList.add('active');
-                ui.tabKitchen.classList.remove('active');
-            } else {
-                ui.counter.classList.add('hidden');
+            } else if (mode === 'kitchen') {
                 ui.kitchen.classList.remove('hidden');
-                ui.tabCounter.classList.remove('active');
                 ui.tabKitchen.classList.add('active');
+            } else if (mode === 'storage') {
+                ui.storage.classList.remove('hidden');
+                ui.tabStorage.classList.add('active');
+                updateShopUI();
+                updateBrewUI();
             }
         }
 
@@ -546,10 +683,15 @@
             updateView('kitchen');
         }
 
-        function goHome() {
-            if(state.currentView === 'counter') return;
-            // Best practice for back nav in apps is history.back()
-            history.back(); 
+        function goStorage() {
+            if(state.currentView === 'storage') return;
+            history.pushState({view: 'storage'}, '');
+            updateView('storage');
+        }
+
+        function goToCounter() {
+            history.pushState({view: 'counter'}, '');
+            updateView('counter');
         }
 
         function navBack() {
@@ -557,44 +699,131 @@
         }
 
         function toggleMode() {
-            if (state.currentView === 'counter') goKitchen();
-            else goHome();
+            if (state.currentView === 'counter') {
+                goKitchen();
+            } else if (state.currentView === 'kitchen') {
+                goStorage();
+            } else {
+                goToCounter();
+            }
         }
 
         function toggleOverlay(type) {
             const overlay = type === 'profile' ? ui.profileOverlay : ui.helpOverlay;
-            // Push state when opening
             history.pushState({view: 'overlay', type: type}, '');
-            
             ui.profileOverlay.classList.remove('visible');
             ui.helpOverlay.classList.remove('visible');
             overlay.classList.add('visible');
-            
             if(type === 'profile') updateProfileUI();
         }
 
-        // Handle the Back Button
         window.addEventListener('popstate', (e) => {
-            // Always close overlays
             ui.profileOverlay.classList.remove('visible');
             ui.helpOverlay.classList.remove('visible');
-
-            // Check where we are based on history state
-            if (e.state && e.state.view === 'kitchen') {
-                updateView('kitchen');
-            } else if (e.state && e.state.view === 'overlay') {
-                // If we popped TO an overlay (forward), show it
-                if(e.state.type === 'profile') {
-                    ui.profileOverlay.classList.add('visible');
-                    updateProfileUI();
+            
+            if (e.state) {
+                if(e.state.view === 'kitchen') updateView('kitchen');
+                else if(e.state.view === 'storage') updateView('storage');
+                else if(e.state.view === 'overlay') {
+                    if(e.state.type === 'profile') {
+                        ui.profileOverlay.classList.add('visible');
+                        updateProfileUI();
+                    } else {
+                        ui.helpOverlay.classList.add('visible');
+                    }
                 } else {
-                    ui.helpOverlay.classList.add('visible');
+                    updateView('counter');
                 }
             } else {
-                // Default to counter
                 updateView('counter');
             }
         });
+
+        function buyItem(key) {
+            const item = SHOP_ITEMS[key];
+            if(state.cash >= item.price) {
+                state.cash -= item.price;
+                state.inventory[key] += item.qty;
+                updateCashDisplay();
+                updateShopUI();
+                saveGame();
+            } else {
+                alert("Not enough cash!");
+            }
+        }
+
+        function updateShopUI() {
+            ui.shopContainer.innerHTML = '';
+            
+            const cbDiv = document.createElement('div');
+            cbDiv.className = 'shop-item';
+            cbDiv.innerHTML = `
+                <span class="shop-name">COLD BREW</span>
+                <span class="shop-stock">${state.inventory['cold_brew']}</span>
+                <span class="shop-price">Via Brew Station</span>
+            `;
+            ui.shopContainer.appendChild(cbDiv);
+
+            for (const [key, item] of Object.entries(SHOP_ITEMS)) {
+                const div = document.createElement('div');
+                div.className = 'shop-item';
+                const canAfford = state.cash >= item.price;
+                
+                div.innerHTML = `
+                    <span class="shop-name">${item.name}</span>
+                    <span class="shop-stock">${state.inventory[key] || 0}</span>
+                    <span class="shop-price">$${item.price} / ${item.qty}</span>
+                    <button class="buy-btn" onclick="buyItem('${key}')" ${canAfford ? '' : 'disabled'}>BUY</button>
+                `;
+                ui.shopContainer.appendChild(div);
+            }
+        }
+
+        function handleColdBrew() {
+            const now = Date.now();
+            
+            if (state.isBrewing) {
+                if (now >= state.brewFinishTime) {
+                    state.inventory['cold_brew'] += 10;
+                    state.isBrewing = false;
+                    state.brewFinishTime = 0;
+                    alert("Cold Brew Collected!");
+                } else {
+                    alert("Still brewing... patience!");
+                }
+            } else {
+                if (state.cash >= 50) {
+                    state.cash -= 50;
+                    state.isBrewing = true;
+                    state.brewFinishTime = now + (2 * 60 * 60 * 1000); 
+                    updateCashDisplay();
+                } else {
+                    alert("Need $50 to start batch!");
+                }
+            }
+            updateBrewUI();
+            saveGame();
+        }
+
+        function updateBrewUI() {
+            if (!state.isBrewing) {
+                ui.brewStatus.innerText = "Status: Idle";
+                ui.brewBtn.innerText = "START BATCH ($50)";
+                ui.brewBtn.disabled = false;
+            } else {
+                const now = Date.now();
+                if (now >= state.brewFinishTime) {
+                    ui.brewStatus.innerText = "Status: READY!";
+                    ui.brewBtn.innerText = "COLLECT";
+                    ui.brewBtn.disabled = false;
+                } else {
+                    const minutesLeft = Math.ceil((state.brewFinishTime - now) / 60000);
+                    ui.brewStatus.innerText = `Status: Brewing (${minutesLeft}m left)`;
+                    ui.brewBtn.innerText = "BREWING...";
+                    ui.brewBtn.disabled = true;
+                }
+            }
+        }
 
         function updateCashDisplay() {
             ui.cash.innerHTML = `$${state.cash.toFixed(2)} &#9662;`;
@@ -654,8 +883,8 @@
             const pick = names[Math.floor(Math.random() * names.length)];
             const baseSteps = RECIPES[pick];
 
-            const roasts = ['DK.Esp', 'MD.Esp', 'LT.Esp'];
-            const roastNames = {'DK.Esp': 'Dark Roast', 'MD.Esp': 'Medium Roast', 'LT.Esp': 'Light Roast'};
+            const roasts = ['LT.Esp', 'MD.Esp', 'DK.Esp'];
+            const roastNames = {'LT.Esp': 'Light Roast', 'MD.Esp': 'Medium Roast', 'DK.Esp': 'Dark Roast'};
             
             const needsRoast = baseSteps.includes('Espresso');
             let displayOrderName = pick;
@@ -683,14 +912,42 @@
             updateView('counter');
         }
 
+        function getInventoryKey(ing) {
+            if(ing === 'DK.Esp') return 'dark_beans';
+            if(ing === 'MD.Esp') return 'med_beans';
+            if(ing === 'LT.Esp') return 'light_beans';
+            if(ing === 'Batch Brew') return 'med_beans'; 
+            if(ing === 'Cold Brew') return 'cold_brew';
+            if(ing === 'Milk' || ing === 'Foam') return 'milk';
+            if(ing === 'Ice') return 'ice';
+            if(ing === 'Tonic') return 'tonic';
+            if(ing === 'Chocolate') return 'choco';
+            if(ing === 'Caramel') return 'caramel';
+            if(ing === 'Matcha') return 'matcha';
+            if(ing === 'Chai') return 'chai';
+            return null; 
+        }
+
         function add(ingredient) {
             if(ui.profileOverlay.classList.contains('visible') || 
                ui.helpOverlay.classList.contains('visible')) return;
                
             if (!state.running) return;
             if (state.cup.length >= 5) return;
+
+            const stockKey = getInventoryKey(ingredient);
+            if (stockKey) {
+                if (state.inventory[stockKey] > 0) {
+                    state.inventory[stockKey]--;
+                } else {
+                    alert("OUT OF STOCK! Buy more in Storage.");
+                    return;
+                }
+            }
+
             state.cup.push(ingredient);
             renderCup();
+            saveGame(); 
         }
 
         function clearCup() {
@@ -762,22 +1019,21 @@
             updateCashDisplay();
             
             state.running = false;
-            goHome(); // Use nav helper to go back
+            goToCounter();
 
             setTimeout(() => { if(!state.running) nextCustomer(); }, 2000);
         }
 
         document.addEventListener('keydown', (e) => {
             const k = e.key.toLowerCase();
-            const overlayOpen = ui.profileOverlay.classList.contains('visible') || 
-                                ui.helpOverlay.classList.contains('visible');
             
             if(k === 'escape') {
                 navBack();
                 return;
             }
 
-            if(overlayOpen) return;
+            if(ui.profileOverlay.classList.contains('visible') || 
+               ui.helpOverlay.classList.contains('visible')) return;
 
             if(k === ' ') {
                 e.preventDefault();
@@ -786,15 +1042,19 @@
             if(k === 'enter') serve();
             if(k === 'backspace' || k === 'delete') clearCup();
 
-            if(['d','m','l','w','f','i','c','a','t'].includes(k)) goKitchen();
+            if(['d','m','l','w','f','i','c','a','t','b','k','n'].includes(k)) goKitchen();
 
-            if(k === '1') add('DK.Esp'); 
+            if(k === '1') add('LT.Esp'); 
             if(k === '2') add('MD.Esp'); 
-            if(k === '3') add('LT.Esp'); 
+            if(k === '3') add('DK.Esp'); 
             
             if(k === 'm') add('Milk');
             if(k === 'w') add('Water');
             if(k === 'f') add('Foam');
+            if(k === 'b') add('Batch Brew');
+            if(k === 'k') add('Cold Brew');
+            if(k === 'n') add('Tonic');
+            
             if(k === 'i') add('Ice');
             if(k === 'c') add('Chocolate');
             if(k === 'a') add('Caramel');
