@@ -306,7 +306,7 @@
             <li class="history-item" style="justify-content:center; color:#888;">No orders yet.</li>
         </ul>
         
-        <button class="btn-full" onclick="toggleOverlay('profile')">CLOSE PROFILE</button>
+        <button class="btn-full" onclick="navBack()">CLOSE PROFILE</button>
         <button class="btn-full btn-danger" onclick="resetSaveData()">RESET DATA</button>
     </div>
 
@@ -335,7 +335,7 @@
         <h2 style="text-align: center; text-decoration: underline;">RECIPES</h2>
         <div id="recipe-list"></div>
         <br><br>
-        <button class="btn-full" onclick="toggleOverlay('help')">CLOSE</button>
+        <button class="btn-full" onclick="navBack()">CLOSE</button>
     </div>
 
     <div id="game-layout">
@@ -387,8 +387,8 @@
     </div>
 
     <nav>
-        <button id="tab-counter" class="nav-tab active" onclick="setMode('counter')">Customer</button>
-        <button id="tab-kitchen" class="nav-tab" onclick="setMode('kitchen')">Kitchen</button>
+        <button id="tab-counter" class="nav-tab active" onclick="goHome()">Customer</button>
+        <button id="tab-kitchen" class="nav-tab" onclick="goKitchen()">Kitchen</button>
     </nav>
 
     <script>
@@ -507,6 +507,8 @@
 
         function init() {
             loadGame();
+            // Initialize history state
+            history.replaceState({view: 'counter'}, '');
 
             let html = '';
             for(let [name, ingredients] of Object.entries(RECIPES)) {
@@ -521,7 +523,9 @@
             nextCustomer();
         }
 
-        function setMode(mode) {
+        // --- NAVIGATION LOGIC ---
+
+        function updateView(mode) {
             state.currentView = mode;
             if (mode === 'counter') {
                 ui.counter.classList.remove('hidden');
@@ -536,23 +540,61 @@
             }
         }
 
+        function goKitchen() {
+            if(state.currentView === 'kitchen') return;
+            history.pushState({view: 'kitchen'}, '');
+            updateView('kitchen');
+        }
+
+        function goHome() {
+            if(state.currentView === 'counter') return;
+            // Best practice for back nav in apps is history.back()
+            history.back(); 
+        }
+
+        function navBack() {
+            history.back();
+        }
+
         function toggleMode() {
-            if (state.currentView === 'counter') setMode('kitchen');
-            else setMode('counter');
+            if (state.currentView === 'counter') goKitchen();
+            else goHome();
         }
 
         function toggleOverlay(type) {
             const overlay = type === 'profile' ? ui.profileOverlay : ui.helpOverlay;
-            const isVis = overlay.classList.contains('visible');
+            // Push state when opening
+            history.pushState({view: 'overlay', type: type}, '');
             
             ui.profileOverlay.classList.remove('visible');
             ui.helpOverlay.classList.remove('visible');
+            overlay.classList.add('visible');
             
-            if (!isVis) {
-                overlay.classList.add('visible');
-                if(type === 'profile') updateProfileUI();
-            }
+            if(type === 'profile') updateProfileUI();
         }
+
+        // Handle the Back Button
+        window.addEventListener('popstate', (e) => {
+            // Always close overlays
+            ui.profileOverlay.classList.remove('visible');
+            ui.helpOverlay.classList.remove('visible');
+
+            // Check where we are based on history state
+            if (e.state && e.state.view === 'kitchen') {
+                updateView('kitchen');
+            } else if (e.state && e.state.view === 'overlay') {
+                // If we popped TO an overlay (forward), show it
+                if(e.state.type === 'profile') {
+                    ui.profileOverlay.classList.add('visible');
+                    updateProfileUI();
+                } else {
+                    ui.helpOverlay.classList.add('visible');
+                }
+            } else {
+                // Default to counter
+                updateView('counter');
+            }
+        });
 
         function updateCashDisplay() {
             ui.cash.innerHTML = `$${state.cash.toFixed(2)} &#9662;`;
@@ -638,7 +680,7 @@
             ui.mood.innerText = "Hello! Can I have a...";
             ui.orderName.innerText = displayOrderName;
             
-            setMode('counter');
+            updateView('counter');
         }
 
         function add(ingredient) {
@@ -720,7 +762,7 @@
             updateCashDisplay();
             
             state.running = false;
-            setMode('counter');
+            goHome(); // Use nav helper to go back
 
             setTimeout(() => { if(!state.running) nextCustomer(); }, 2000);
         }
@@ -731,8 +773,7 @@
                                 ui.helpOverlay.classList.contains('visible');
             
             if(k === 'escape') {
-                ui.profileOverlay.classList.remove('visible');
-                ui.helpOverlay.classList.remove('visible');
+                navBack();
                 return;
             }
 
@@ -745,7 +786,7 @@
             if(k === 'enter') serve();
             if(k === 'backspace' || k === 'delete') clearCup();
 
-            if(['d','m','l','w','f','i','c','a','t'].includes(k)) setMode('kitchen');
+            if(['d','m','l','w','f','i','c','a','t'].includes(k)) goKitchen();
 
             if(k === '1') add('DK.Esp'); 
             if(k === '2') add('MD.Esp'); 
