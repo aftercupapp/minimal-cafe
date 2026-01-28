@@ -160,7 +160,7 @@
         }
 
         #kitchen-display {
-            flex-grow: 1; 
+            flex-grow: 1;
             display: flex; 
             align-items: center; 
             justify-content: center; 
@@ -221,7 +221,7 @@
             font-size: 0.75rem;
             background: white;
             border-top: 1px solid #eee;
-            overflow-x: hidden; 
+            overflow-x: hidden;
         }
 
         .legend-cat {
@@ -240,7 +240,7 @@
                 grid-template-columns: 1fr 1fr; 
                 font-size: 0.75rem;
                 padding: 10px;
-                max-height: 45vh; 
+                max-height: 45vh;
                 overflow-y: auto;
             }
             .legend-cat {
@@ -253,8 +253,8 @@
             }
             #cup-container {
                 transform: scale(0.9);
-                margin: 0 auto 0 auto; 
-                left: 15px; 
+                margin: 0 auto 0 auto;
+                left: 15px;
             }
         }
 
@@ -359,9 +359,9 @@
             
             <div id="keyboard-legend">
                 <div class="legend-cat">ROASTS</div>
-                <div class="legend-item">Dark <span class="legend-key">1</span></div>
-                <div class="legend-item">Med <span class="legend-key">2</span></div>
-                <div class="legend-item">Light <span class="legend-key">3</span></div>
+                <div class="legend-item">Dark Roast <span class="legend-key">1</span></div>
+                <div class="legend-item">Medium Roast <span class="legend-key">2</span></div>
+                <div class="legend-item">Light Roast <span class="legend-key">3</span></div>
                 
                 <div class="legend-cat">BASES</div>
                 <div class="legend-item">Milk <span class="legend-key">M</span></div>
@@ -432,7 +432,7 @@
             "Fifi", "Gigi", "Jojo", "Pippa", "Poppy", "Rosie", "Sasha"
         ];
 
-        const SAVE_KEY = 'minimalCafeSave_v13';
+        const SAVE_KEY = 'minimalCafeSave_v15';
         
         const defaultState = {
             cash: 0,
@@ -613,7 +613,7 @@
             const baseSteps = RECIPES[pick];
 
             const roasts = ['DK.Esp', 'MD.Esp', 'LT.Esp'];
-            const roastNames = {'DK.Esp': 'Dark', 'MD.Esp': 'Med', 'LT.Esp': 'Light'};
+            const roastNames = {'DK.Esp': 'Dark Roast', 'MD.Esp': 'Medium Roast', 'LT.Esp': 'Light Roast'};
             
             const needsRoast = baseSteps.includes('Espresso');
             let displayOrderName = pick;
