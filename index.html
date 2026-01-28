@@ -23,11 +23,12 @@
             overflow: hidden;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            font-size: 16px; 
         }
 
         header {
             border-bottom: var(--border);
-            height: 50px;
+            height: 55px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,20 +38,20 @@
             z-index: 10;
         }
 
-        h1 { font-size: 1rem; font-weight: 900; letter-spacing: 1px; }
+        h1 { font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; }
 
-        .interactive { cursor: pointer; border-bottom: 2px solid transparent; }
+        .interactive { cursor: pointer; border-bottom: 2px solid transparent; font-weight: bold; }
         .interactive:active { border-bottom: 2px solid black; }
         
         #btn-help {
             font-weight: bold; border: 2px solid black; 
-            width: 25px; height: 25px; text-align: center; 
-            line-height: 21px; cursor: pointer;
+            width: 30px; height: 30px; text-align: center; 
+            line-height: 26px; cursor: pointer; font-size: 1.1rem;
         }
 
         .overlay {
             display: none; position: absolute;
-            top: 50px; left: 0; right: 0; bottom: 0;
+            top: 55px; left: 0; right: 0; bottom: 0;
             background: white; z-index: 99;
             padding: 20px; overflow-y: auto;
             border-top: var(--border);
@@ -60,14 +61,14 @@
         
         .stat-grid {
             display: grid; grid-template-columns: 1fr 1fr;
-            gap: 10px; margin-bottom: 20px;
-            border-bottom: var(--border); padding-bottom: 20px;
+            gap: 15px; margin-bottom: 25px;
+            border-bottom: var(--border); padding-bottom: 25px;
         }
         .stat-box {
-            border: 1px solid black; padding: 10px; text-align: center;
+            border: 2px solid black; padding: 15px; text-align: center;
         }
-        .stat-val { font-size: 1.2rem; font-weight: bold; display: block; }
-        .stat-label { font-size: 0.7rem; text-transform: uppercase; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; display: block; }
+        .stat-label { font-size: 0.8rem; text-transform: uppercase; font-weight: bold; }
 
         .history-list { list-style: none; margin-bottom: 20px; padding-left: 0; }
         
@@ -77,37 +78,38 @@
             align-items: center;
             gap: 10px;
             border-bottom: 1px dashed black; 
-            padding: 8px 0;
-            font-size: 0.8rem;
+            padding: 12px 0;
+            font-size: 0.95rem;
         }
         
-        .hist-face { font-size: 0.7rem; white-space: pre; text-align: center; overflow: hidden;}
+        .hist-face { font-size: 0.9rem; white-space: pre; text-align: center; overflow: hidden;}
         .hist-details { display: flex; flex-direction: column; }
-        .hist-name { font-weight: bold; }
-        .hist-order { font-size: 0.7rem; opacity: 0.7; }
+        .hist-name { font-weight: 900; font-size: 0.9rem; }
+        .hist-order { font-size: 0.85rem; opacity: 0.8; }
         .hist-win { color: black; }
         .hist-loss { text-decoration: line-through; opacity: 0.5; }
 
         .btn-full {
-            width: 100%; height: 40px; 
+            width: 100%; height: 50px; 
             border: 2px solid black; background: white; 
-            font-weight: bold; cursor: pointer; margin-top: 10px;
+            font-weight: 900; cursor: pointer; margin-top: 15px;
             font-family: inherit; text-transform: uppercase;
+            font-size: 1.1rem;
         }
         .btn-full:active { background: black; color: white; }
-        .btn-danger { border-color: black; color: black; opacity: 0.6; font-size: 0.8rem; }
+        .btn-danger { border-color: black; color: black; opacity: 0.6; font-size: 0.9rem; }
 
-        .help-section { margin-bottom: 20px; border-bottom: 2px solid black; padding-bottom: 20px; }
-        .key-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px; }
-        .key-box { font-weight: bold; background: black; color: white; padding: 0 4px; }
+        .help-section { margin-bottom: 25px; border-bottom: 2px solid black; padding-bottom: 25px; }
+        .key-row { display: flex; justify-content: space-between; font-size: 1rem; margin-bottom: 10px; font-weight: 500; }
+        .key-box { font-weight: 900; background: black; color: white; padding: 2px 8px; border-radius: 2px; }
         
-        .info-block { font-size: 0.8rem; margin-bottom: 15px; line-height: 1.4; }
-        .info-title { font-weight: bold; text-decoration: underline; display: block; margin-bottom: 4px; }
+        .info-block { font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; font-weight: 500; }
+        .info-title { font-weight: 900; text-decoration: underline; display: block; margin-bottom: 5px; font-size: 1rem;}
 
         .recipe-row {
             display: flex; justify-content: space-between;
-            border-bottom: 1px dashed black; padding: 8px 0;
-            font-size: 0.85rem;
+            border-bottom: 1px dashed black; padding: 12px 0;
+            font-size: 0.95rem; font-weight: 500;
         }
 
         #game-layout {
@@ -130,21 +132,21 @@
         }
 
         #face {
-            font-size: 2rem; margin-bottom: 10px; font-weight: bold;
-            height: 50px; display: flex; align-items: center; justify-content: center; width: 100%;
+            font-size: 3rem; margin-bottom: 15px; font-weight: 900;
+            height: 70px; display: flex; align-items: center; justify-content: center; width: 100%;
         }
         
         #customer-name-tag {
-            font-weight: bold; border: 1px solid black; padding: 2px 8px;
-            margin-bottom: 20px; font-size: 0.9rem; background: black;
+            font-weight: 900; border: 2px solid black; padding: 6px 12px;
+            margin-bottom: 25px; font-size: 1.1rem; background: black;
             color: white; border-radius: 4px;
         }
 
         #speech-bubble {
-            border: var(--border);
-            padding: 20px; position: relative;
-            background: white; width: 100%; max-width: 350px;
-            box-shadow: 8px 8px 0 var(--ink);
+            border: 2px solid var(--ink);
+            padding: 25px; position: relative;
+            background: white; width: 100%; max-width: 400px;
+            box-shadow: 10px 10px 0 var(--ink);
         }
         
         #speech-bubble::after {
@@ -154,7 +156,7 @@
             transform: translateX(-50%);
         }
 
-        #order-name { font-size: 1.4rem; font-weight: bold; display: block; margin-top: 10px; line-height: 1.2; }
+        #order-name { font-size: 1.6rem; font-weight: 900; display: block; margin-top: 10px; line-height: 1.2; }
 
         #prep-view { 
             background: white;
@@ -172,9 +174,9 @@
         }
 
         #cup-container {
-            width: 120px;
-            height: 150px;
-            border: 4px solid var(--ink);
+            width: 130px;
+            height: 160px;
+            border: 5px solid var(--ink);
             border-top: none;
             border-radius: 0 0 15px 15px;
             display: flex;
@@ -182,27 +184,27 @@
             padding: 4px;
             position: relative;
             background: white;
-            margin-right: 30px;
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            margin-right: 35px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
         }
 
         #cup-container::after {
             content: '';
             position: absolute;
             top: 25%;
-            right: -29px;
-            width: 25px;
+            right: -34px;
+            width: 30px;
             height: 50%;
-            border: 4px solid var(--ink);
+            border: 5px solid var(--ink);
             border-left: none;
-            border-radius: 0 15px 15px 0;
+            border-radius: 0 20px 20px 0;
         }
 
         .ingredient-layer {
             width: 100%; height: 20%; 
             border: 1px solid var(--ink);
-            text-align: center; font-size: 0.6rem; 
-            line-height: 28px; font-weight: bold;
+            text-align: center; font-size: 0.7rem; 
+            line-height: 28px; font-weight: 900;
             overflow: hidden; white-space: nowrap;
             background: white;
             border-radius: 2px;
@@ -217,109 +219,116 @@
         #keyboard-legend {
             width: 100%;
             flex-shrink: 0;
-            padding: 10px 15px;
+            padding: 15px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 5px 15px;
-            font-size: 0.75rem;
+            gap: 10px 20px;
+            font-size: 0.9rem;
             background: white;
             border-top: 1px solid #eee;
             overflow-x: hidden;
         }
 
         .legend-cat {
-            font-weight: bold;
+            font-weight: 900;
             border-bottom: 2px solid black;
-            margin-top: 5px;
-            margin-bottom: 2px;
+            margin-top: 10px;
+            margin-bottom: 5px;
             grid-column: span 2;
+            font-size: 1rem;
         }
         
-        .legend-key { font-weight: 900; background: black; color: white; padding: 0 4px; display: inline-block; min-width: 15px; text-align: center;}
-        .legend-item { display: flex; justify-content: space-between; align-items: center; white-space: nowrap; }
+        .legend-key { font-weight: 900; background: black; color: white; padding: 2px 8px; display: inline-block; min-width: 24px; text-align: center; border-radius: 2px;}
+        .legend-item { display: flex; justify-content: space-between; align-items: center; white-space: nowrap; font-weight: 500; }
 
         @media (max-width: 600px) {
             #keyboard-legend {
                 grid-template-columns: 1fr 1fr; 
-                font-size: 0.75rem;
-                padding: 10px;
-                max-height: 45vh;
+                font-size: 0.9rem; 
+                padding: 15px;
+                max-height: 48vh;
                 overflow-y: auto;
             }
             .legend-cat {
                 grid-column: span 2;
-                border-bottom: 1px solid black;
-                margin-top: 8px;
+                border-bottom: 2px solid black;
+                margin-top: 15px;
             }
             #kitchen-display {
                 border-bottom: var(--border);
             }
             #cup-container {
-                transform: scale(0.9);
+                transform: scale(0.95);
                 margin: 0 auto 0 auto;
                 left: -10px;
             }
+            .shop-name { font-size: 0.9rem; }
+            .shop-price { font-size: 0.85rem; font-weight: bold; }
+            .buy-btn { font-size: 1rem; padding: 10px; }
         }
 
         #storage-view {
             background: white;
             overflow-y: auto;
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
         }
 
         .brew-station {
-            border: 2px solid black;
-            padding: 15px;
+            border: 3px solid black;
+            padding: 20px;
             text-align: center;
-            margin-bottom: 20px;
-            background: #f4f4f4;
+            margin-bottom: 25px;
+            background: #f0f0f0;
         }
 
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 15px;
         }
 
         .shop-item {
-            border: 1px solid black;
-            padding: 10px;
+            border: 2px solid black;
+            padding: 12px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .shop-name { font-weight: bold; font-size: 0.75rem; text-transform: uppercase; }
-        .shop-stock { font-size: 1.2rem; font-weight: 900; margin: 5px 0; }
-        .shop-price { font-size: 0.75rem; }
+        .shop-name { font-weight: 900; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 5px; }
+        .shop-stock { font-size: 1.4rem; font-weight: 900; margin: 8px 0; }
+        .shop-price { font-size: 0.85rem; font-weight: bold; }
         
         .buy-btn {
             background: black; color: white; border: none;
-            padding: 5px; font-weight: bold; cursor: pointer;
-            margin-top: 5px; font-family: inherit; font-size: 0.7rem;
+            padding: 8px; font-weight: 900; cursor: pointer;
+            margin-top: 8px; font-family: inherit; font-size: 0.9rem;
+            text-transform: uppercase;
         }
         .buy-btn:active { opacity: 0.7; }
         .buy-btn:disabled { background: #ccc; cursor: not-allowed; }
 
         .nav-hint {
             text-align: center;
-            padding: 10px;
-            font-size: 0.8rem;
-            opacity: 0.6;
-            margin-top: 20px;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            opacity: 0.5;
+            margin-top: 25px;
             border-top: 1px solid #ddd;
         }
 
         nav {
-            height: 55px; border-top: var(--border);
+            height: 65px; 
+            border-top: var(--border);
             display: flex; flex-shrink: 0;
         }
         .nav-tab {
             flex: 1; border: none; background: white;
-            font-family: inherit; font-size: 1.1rem; font-weight: bold;
+            font-family: inherit; font-size: 1.2rem; font-weight: 900;
             border-right: var(--border); cursor: pointer; text-transform: uppercase;
         }
         .nav-tab.active { background: black; color: white; }
@@ -339,7 +348,7 @@
     </header>
 
     <div id="profile-overlay" class="overlay">
-        <h2 style="text-align:center; text-decoration: underline;">BARISTA PROFILE</h2>
+        <h2 style="text-align:center; text-decoration: underline; font-weight:900;">BARISTA PROFILE</h2>
         <br>
         <div class="stat-grid">
             <div class="stat-box">
@@ -363,26 +372,18 @@
         
         <button class="btn-full" onclick="navBack()">CLOSE PROFILE</button>
         <button class="btn-full btn-danger" onclick="resetSaveData()">RESET DATA</button>
-        <div style="text-align: center; margin-top: 15px; font-size: 0.7rem; opacity: 0.5;">v0.1.14</div>
+        <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; font-weight:bold; opacity: 0.4;">v0.1.14</div>
     </div>
 
     <div id="help-overlay" class="overlay">
         
         <div class="help-section">
-            <h2 style="text-align: center; text-decoration: underline;">COFFEE KNOWLEDGE</h2>
-            <br>
-            <div class="info-block">
-                <span class="info-title">COLD BREW</span>
-                Coarse coffee grounds steeped in room-temperature or cold water for 12-24 hours. The result is smooth, full-bodied, and has lower acidity than hot coffee.
-            </div>
-            <div class="info-block">
-                <span class="info-title">GOOD ESPRESSO</span>
-                Extracted under high pressure (9 bars). A perfect shot balances acidity, sweetness, and bitterness, topped with a golden-brown foam layer called 'crema'.
-            </div>
+            <h2 style="text-align: center; text-decoration: underline; font-weight:900;">RECIPES</h2>
+            <div id="recipe-list"></div>
         </div>
 
         <div class="help-section">
-            <h2 style="text-align: center; text-decoration: underline;">CONTROLS</h2>
+            <h2 style="text-align: center; text-decoration: underline; font-weight:900;">CONTROLS</h2>
             <br>
             <div class="key-row"><span>Light Roast</span><span class="key-box">1</span></div>
             <div class="key-row"><span>Medium Roast</span><span class="key-box">2</span></div>
@@ -404,10 +405,22 @@
             <div class="key-row"><span>Cycle View</span><span class="key-box">SPACE</span></div>
         </div>
 
-        <h2 style="text-align: center; text-decoration: underline;">RECIPES</h2>
-        <div id="recipe-list"></div>
-        <br><br>
-        <button class="btn-full" onclick="navBack()">CLOSE</button>
+        <div class="help-section" style="border-bottom:none;">
+            <h2 style="text-align: center; text-decoration: underline; font-weight:900;">COFFEE KNOWLEDGE</h2>
+            <br>
+            <div class="info-block">
+                <span class="info-title">COLD BREW</span>
+                Coarse coffee grounds steeped in room-temperature or cold water for 12-24 hours. The result is smooth, full-bodied, and has lower acidity than hot coffee.
+            </div>
+            <div class="info-block">
+                <span class="info-title">GOOD ESPRESSO</span>
+                Extracted under high pressure (9 bars). A perfect shot balances acidity, sweetness, and bitterness, topped with a golden-brown foam layer called 'crema'.
+            </div>
+        </div>
+
+        <br>
+        <button class="btn-full" onclick="navBack()">CLOSE HELP</button>
+        <div style="height:50px;"></div>
     </div>
 
     <div id="game-layout">
@@ -417,11 +430,11 @@
             <div id="customer-name-tag"></div>
             
             <div id="speech-bubble">
-                <div style="font-style:italic; font-size: 0.9rem;" id="mood-text"></div>
+                <div style="font-style:italic; font-size: 1rem;" id="mood-text"></div>
                 <span id="order-name"></span>
             </div>
             <br>
-            <div style="font-size: 0.8rem; opacity: 0.5;">[SPACE] TO KITCHEN</div>
+            <div style="font-size: 0.9rem; font-weight:bold; opacity: 0.5;">[SPACE] TO KITCHEN</div>
         </section>
 
         <section id="prep-view" class="hidden">
@@ -439,8 +452,8 @@
                 <div class="legend-item">Milk <span class="legend-key">M</span></div>
                 <div class="legend-item">Water <span class="legend-key">W</span></div>
                 <div class="legend-item">Foam <span class="legend-key">F</span></div>
-                <div class="legend-item">Batch <span class="legend-key">B</span></div>
-                <div class="legend-item">Cold <span class="legend-key">K</span></div>
+                <div class="legend-item">Batch Brew <span class="legend-key">B</span></div>
+                <div class="legend-item">Cold Brew <span class="legend-key">K</span></div>
                 
                 <div class="legend-cat">ADD-ONS</div>
                 <div class="legend-item">Ice <span class="legend-key">I</span></div>
@@ -461,13 +474,13 @@
 
         <!-- STORAGE VIEW -->
         <section id="storage-view" class="hidden">
-            <h2 style="text-align: center; margin-bottom: 15px; text-decoration: underline;">INVENTORY</h2>
+            <h2 style="text-align: center; margin-bottom: 20px; text-decoration: underline; font-weight:900;">INVENTORY</h2>
             
             <div class="brew-station">
-                <h3>COLD BREW STATION</h3>
-                <p id="brew-status" style="font-size: 0.8rem; margin: 5px 0;">Status: Idle</p>
+                <h3 style="font-weight:900;">COLD BREW STATION</h3>
+                <p id="brew-status" style="font-size: 1rem; font-weight:bold; margin: 10px 0;">Status: Idle</p>
                 <button id="brew-btn" class="btn-full" onclick="handleColdBrew()">START BATCH ($50)</button>
-                <div style="font-size: 0.7rem; margin-top: 5px;">Takes 2 Hours. Yields 10 portions.</div>
+                <div style="font-size: 0.85rem; font-weight:bold; margin-top: 10px; opacity:0.7;">Takes 2 Hours. Yields 10 portions.</div>
             </div>
 
             <div class="shop-grid" id="shop-container">
@@ -475,7 +488,7 @@
             </div>
             
             <div class="nav-hint">[SPACE] TO CUSTOMER</div>
-            <div style="height: 30px;"></div>
+            <div style="height: 50px;"></div>
         </section>
 
     </div>
@@ -530,7 +543,7 @@
             "Fifi", "Gigi", "Jojo", "Pippa", "Poppy", "Rosie", "Sasha"
         ];
 
-        const SAVE_KEY = 'minimalCafeSave_v21';
+        const SAVE_KEY = 'minimalCafeSave_v23';
         
         const SHOP_ITEMS = {
             'light_beans': { name: 'Light Roast Beans', price: 15, qty: 10 },
@@ -709,6 +722,14 @@
         }
 
         function toggleOverlay(type) {
+            const isProfileOpen = ui.profileOverlay.classList.contains('visible');
+            const isHelpOpen = ui.helpOverlay.classList.contains('visible');
+
+            if ((type === 'profile' && isProfileOpen) || (type === 'help' && isHelpOpen)) {
+                history.back();
+                return;
+            }
+
             const overlay = type === 'profile' ? ui.profileOverlay : ui.helpOverlay;
             history.pushState({view: 'overlay', type: type}, '');
             ui.profileOverlay.classList.remove('visible');
