@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Minimal Cafe</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --ink: #000000;
+            --border: 3px solid var(--ink);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--ink);
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        header {
+            border-bottom: var(--border);
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            flex-shrink: 0;
+            background: white;
+            z-index: 10;
+        }
+
+        h1 { font-size: 1rem; font-weight: 900; letter-spacing: 1px; }
+
+        .interactive { cursor: pointer; border-bottom: 2px solid transparent; }
+        .interactive:active { border-bottom: 2px solid black; }
+        
+        #btn-help {
+            font-weight: bold; border: 2px solid black; 
+            width: 25px; height: 25px; text-align: center; 
+            line-height: 21px; cursor: pointer;
+        }
+
+        .overlay {
+            display: none; position: absolute;
+            top: 50px; left: 0; right: 0; bottom: 0;
+            background: white; z-index: 99;
+            padding: 20px; overflow-y: auto;
+            border-top: var(--border);
+        }
+        
+        .overlay.visible { display: block; }
+        
+        .stat-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 10px; margin-bottom: 20px;
+            border-bottom: var(--border); padding-bottom: 20px;
+        }
+        .stat-box {
+            border: 1px solid black; padding: 10px; text-align: center;
+        }
+        .stat-val { font-size: 1.2rem; font-weight: bold; display: block; }
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; }
+
+        .history-list { list-style: none; margin-bottom: 20px; padding-left: 0; }
+        
+        .history-item {
+            display: grid; 
+            grid-template-columns: 50px 1fr auto;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px dashed black; 
+            padding: 8px 0;
+            font-size: 0.8rem;
+        }
+        
+        .hist-face { font-size: 0.7rem; white-space: pre; text-align: center; overflow: hidden;}
+        .hist-details { display: flex; flex-direction: column; }
+        .hist-name { font-weight: bold; }
+        .hist-order { font-size: 0.7rem; opacity: 0.7; }
+        .hist-win { color: black; }
+        .hist-loss { text-decoration: line-through; opacity: 0.5; }
+
+        .btn-full {
+            width: 100%; height: 40px; 
+            border: 2px solid black; background: white; 
+            font-weight: bold; cursor: pointer; margin-top: 10px;
+            font-family: inherit; text-transform: uppercase;
+        }
+        .btn-full:active { background: black; color: white; }
+        .btn-danger { border-color: black; color: black; opacity: 0.6; font-size: 0.8rem; }
+
+        .help-section { margin-bottom: 20px; border-bottom: 2px solid black; padding-bottom: 20px; }
+        .key-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px; }
+        .key-box { font-weight: bold; background: black; color: white; padding: 0 4px; }
+
+        .recipe-row {
+            display: flex; justify-content: space-between;
+            border-bottom: 1px dashed black; padding: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        #game-layout {
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+        }
+
+        #customer-view {
+            background: white;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #face {
+            font-size: 2rem; margin-bottom: 10px; font-weight: bold;
+            height: 50px; display: flex; align-items: center; justify-content: center; width: 100%;
+        }
+        
+        #customer-name-tag {
+            font-weight: bold; border: 1px solid black; padding: 2px 8px;
+            margin-bottom: 20px; font-size: 0.9rem; background: black;
+            color: white; border-radius: 4px;
+        }
+
+        #speech-bubble {
+            border: var(--border);
+            padding: 20px; position: relative;
+            background: white; width: 100%; max-width: 350px;
+            box-shadow: 8px 8px 0 var(--ink);
+        }
+        
+        #speech-bubble::after {
+            content: ''; position: absolute; top: -15px; left: 50%;
+            border-width: 0 15px 15px; border-style: solid;
+            border-color: var(--ink) transparent;
+            transform: translateX(-50%);
+        }
+
+        #order-name { font-size: 1.4rem; font-weight: bold; display: block; margin-top: 10px; line-height: 1.2; }
+
+        #prep-view { 
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #kitchen-display {
+            flex-grow: 1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            border-bottom: var(--border);
+        }
+
+        #cup-container {
+            width: 120px;
+            height: 150px;
+            border: 4px solid var(--ink);
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 4px;
+            position: relative;
+            background: white;
+            margin-right: 30px;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+        }
+
+        #cup-container::after {
+            content: '';
+            position: absolute;
+            top: 25%;
+            right: -29px;
+            width: 25px;
+            height: 50%;
+            border: 4px solid var(--ink);
+            border-left: none;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .ingredient-layer {
+            width: 100%; height: 20%; 
+            border: 1px solid var(--ink);
+            text-align: center; font-size: 0.6rem; 
+            line-height: 28px; font-weight: bold;
+            overflow: hidden; white-space: nowrap;
+            background: white;
+            border-radius: 2px;
+            margin-top: 1px;
+        }
+        
+        .ingredient-layer:first-child {
+             border-radius: 0 0 10px 10px;
+             margin-top: 0;
+        }
+
+        #keyboard-legend {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 10px 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 15px;
+            font-size: 0.75rem;
+            background: white;
+            border-top: 1px solid #eee;
+            overflow-x: hidden; 
+        }
+
+        .legend-cat {
+            font-weight: bold;
+            border-bottom: 2px solid black;
+            margin-top: 5px;
+            margin-bottom: 2px;
+            grid-column: span 2;
+        }
+        
+        .legend-key { font-weight: 900; background: black; color: white; padding: 0 4px; display: inline-block; min-width: 15px; text-align: center;}
+        .legend-item { display: flex; justify-content: space-between; align-items: center; white-space: nowrap; }
+
+        @media (max-width: 600px) {
+            #keyboard-legend {
+                grid-template-columns: 1fr 1fr; 
+                font-size: 0.75rem;
+                padding: 10px;
+                max-height: 45vh; 
+                overflow-y: auto;
+            }
+            .legend-cat {
+                grid-column: span 2;
+                border-bottom: 1px solid black;
+                margin-top: 8px;
+            }
+            #kitchen-display {
+                border-bottom: var(--border);
+            }
+            #cup-container {
+                transform: scale(0.9);
+                margin: 0 auto 0 auto; 
+                left: 15px; 
+            }
+        }
+
+        nav {
+            height: 55px; border-top: var(--border);
+            display: flex; flex-shrink: 0;
+        }
+        .nav-tab {
+            flex: 1; border: none; background: white;
+            font-family: inherit; font-size: 1.1rem; font-weight: bold;
+            border-right: var(--border); cursor: pointer; text-transform: uppercase;
+        }
+        .nav-tab.active { background: black; color: white; }
+        .nav-tab:last-child { border-right: none; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div id="cash-display" class="interactive" onclick="toggleOverlay('profile')">
+            $0.00 &#9662; 
+        </div>
+        <h1>MINIMAL CAFE</h1>
+        <div id="btn-help" onclick="toggleOverlay('help')">?</div>
+    </header>
+
+    <div id="profile-overlay" class="overlay">
+        <h2 style="text-align:center; text-decoration: underline;">BARISTA PROFILE</h2>
+        <br>
+        <div class="stat-grid">
+            <div class="stat-box">
+                <span id="stat-rank" class="stat-val">INTERN</span>
+                <span class="stat-label">Rank</span>
+            </div>
+            <div class="stat-box">
+                <span id="stat-accuracy" class="stat-val">100%</span>
+                <span class="stat-label">Accuracy</span>
+            </div>
+            <div class="stat-box" style="grid-column: span 2">
+                <span id="stat-served" class="stat-val">0</span>
+                <span class="stat-label">Total Served</span>
+            </div>
+        </div>
+
+        <h3>HISTORY (Last 10)</h3>
+        <ul id="history-list" class="history-list">
+            <li class="history-item" style="justify-content:center; color:#888;">No orders yet.</li>
+        </ul>
+        
+        <button class="btn-full" onclick="toggleOverlay('profile')">CLOSE PROFILE</button>
+        <button class="btn-full btn-danger" onclick="resetSaveData()">RESET DATA</button>
+    </div>
+
+    <div id="help-overlay" class="overlay">
+        
+        <div class="help-section">
+            <h2 style="text-align: center; text-decoration: underline;">CONTROLS</h2>
+            <br>
+            <div class="key-row"><span>Dark Roast</span><span class="key-box">1</span></div>
+            <div class="key-row"><span>Medium Roast</span><span class="key-box">2</span></div>
+            <div class="key-row"><span>Light Roast</span><span class="key-box">3</span></div>
+            <div class="key-row"><span>Steamed Milk</span><span class="key-box">M</span></div>
+            <div class="key-row"><span>Hot Water</span><span class="key-box">W</span></div>
+            <div class="key-row"><span>Milk Foam</span><span class="key-box">F</span></div>
+            <div class="key-row"><span>Ice</span><span class="key-box">I</span></div>
+            <div class="key-row"><span>Chocolate</span><span class="key-box">C</span></div>
+            <div class="key-row"><span>Caramel</span><span class="key-box">A</span></div>
+            <div class="key-row"><span>Matcha</span><span class="key-box">T</span></div>
+            <div class="key-row"><span>Chai</span><span class="key-box">H</span></div>
+            <br>
+            <div class="key-row"><span>Serve</span><span class="key-box">ENTER</span></div>
+            <div class="key-row"><span>Trash Cup</span><span class="key-box">BKSP</span></div>
+            <div class="key-row"><span>Switch View</span><span class="key-box">SPACE</span></div>
+        </div>
+
+        <h2 style="text-align: center; text-decoration: underline;">RECIPES</h2>
+        <div id="recipe-list"></div>
+        <br><br>
+        <button class="btn-full" onclick="toggleOverlay('help')">CLOSE</button>
+    </div>
+
+    <div id="game-layout">
+        
+        <section id="customer-view">
+            <div id="face"></div>
+            <div id="customer-name-tag"></div>
+            
+            <div id="speech-bubble">
+                <div style="font-style:italic; font-size: 0.9rem;" id="mood-text"></div>
+                <span id="order-name"></span>
+            </div>
+            <br>
+            <div style="font-size: 0.8rem; opacity: 0.5;">[SPACE] TO KITCHEN</div>
+        </section>
+
+        <section id="prep-view" class="hidden">
+            <div id="kitchen-display">
+                <div id="cup-container"></div>
+            </div>
+            
+            <div id="keyboard-legend">
+                <div class="legend-cat">ROASTS</div>
+                <div class="legend-item">Dark <span class="legend-key">1</span></div>
+                <div class="legend-item">Med <span class="legend-key">2</span></div>
+                <div class="legend-item">Light <span class="legend-key">3</span></div>
+                
+                <div class="legend-cat">BASES</div>
+                <div class="legend-item">Milk <span class="legend-key">M</span></div>
+                <div class="legend-item">Water <span class="legend-key">W</span></div>
+                <div class="legend-item">Foam <span class="legend-key">F</span></div>
+                
+                <div class="legend-cat">ADD-ONS</div>
+                <div class="legend-item">Ice <span class="legend-key">I</span></div>
+                <div class="legend-item">Choco <span class="legend-key">C</span></div>
+                <div class="legend-item">Caramel <span class="legend-key">A</span></div>
+                
+                <div class="legend-cat">TEA</div>
+                <div class="legend-item">Matcha <span class="legend-key">T</span></div>
+                <div class="legend-item">Chai <span class="legend-key">H</span></div>
+                
+                <div class="legend-cat">ACTIONS</div>
+                <div class="legend-item">Serve <span class="legend-key">ENT</span></div>
+                <div class="legend-item">Trash <span class="legend-key">DEL</span></div>
+                <div class="legend-item">View <span class="legend-key">SPC</span></div>
+            </div>
+        </section>
+
+    </div>
+
+    <nav>
+        <button id="tab-counter" class="nav-tab active" onclick="setMode('counter')">Customer</button>
+        <button id="tab-kitchen" class="nav-tab" onclick="setMode('kitchen')">Kitchen</button>
+    </nav>
+
+    <script>
+        const RECIPES = {
+            'Espresso':         ['Espresso'],
+            'Americano':        ['Water', 'Espresso'],
+            'Latte':            ['Milk', 'Espresso', 'Foam'],
+            'Cappuccino':       ['Milk', 'Foam', 'Espresso'],
+            'Flat White':       ['Milk', 'Espresso', 'Espresso'],
+            'Mocha':            ['Chocolate', 'Milk', 'Espresso'],
+            'Iced Coffee':      ['Ice', 'Espresso', 'Milk'],
+            'Caramel Macchiato':['Caramel', 'Milk', 'Espresso'],
+            'Matcha Latte':     ['Matcha', 'Milk', 'Foam'],
+            'Dirty Chai':       ['Chai', 'Espresso', 'Milk'],
+            'Chai Latte':       ['Chai', 'Milk', 'Foam']
+        };
+
+        const FACES_NEUTRAL = [
+            "(˶ᵔ ᵕ ᵔ˶)", "( ˙꒳​˙ )", "(ㆆ_ㆆ)", "ᗜ⩊ᗜ", "≽^•⩊•^≼", "( ͡° ͜ʖ ͡°)",
+            "(・_・;)", "(¬_¬)", "(o_O)", "(•_•)", "ʕ •ᴥ•ʔ", "(=^･ω･^=)",
+            "( ◡‿◡ )", "(◕‿◕)", "(・∀・)", "(｡•̀ᴗ-)✧", "( ˘▽˘)っ"
+        ];
+        
+        const FACES_HAPPY = [
+            "⸜(｡˃ ᵕ ˂ )⸝♡", "(੭˃ᴗ˂)੭", "( ˘ ³˘)♥", "(≧◡≦)", "(´｡• ᵕ •｡`)",
+            "(⌒▽⌒)☆", "(o^▽^o)", "(* ^ ω ^)", "(´• ω •`)", "╰(*´︶`*)╯",
+            "(☆▽☆)", "(✯◡✯)", "\\(★ω★)/", "( ˙꒳​˙ )b", "(๑˃ᴗ˂)ﻭ"
+        ];
+        
+        const FACES_SAD = [
+            "(╥﹏╥)", "(ง •̀_•́)ง", "¯\\_(ツ)_/¯", "(mu_m)", "(T_T)",
+            "(>-<)", "(;;;*_*)", "(´･_･`)", "(ノ_<。)", "(｡•́︿•̀｡)",
+            "(＃`Д´)", "(；￣Д￣)", "(￣ ￣|||)"
+        ];
+
+        const NAMES = [
+            "Luna", "Bella", "Daisy", "Ruby", "Lily", "Zoe", "Chloe", "Sophie", 
+            "Mia", "Emma", "Ava", "Ivy", "Nora", "Grace", "Hazel", "Violet",
+            "Aurora", "Penny", "Stella", "Lucy", "Maya", "Kiki", "Momo", "Coco",
+            "Lulu", "Mimi", "Bibi", "Yumi", "Hana", "Nina", "Rina", "Tina",
+            "Fifi", "Gigi", "Jojo", "Pippa", "Poppy", "Rosie", "Sasha"
+        ];
+
+        const SAVE_KEY = 'minimalCafeSave_v13';
+        
+        const defaultState = {
+            cash: 0,
+            totalServed: 0,
+            totalCorrect: 0,
+            history: []
+        };
+
+        let state = { 
+            ...defaultState,
+            cup: [], 
+            target: null, 
+            running: false,
+            currentCustomerName: "",
+            currentView: 'counter'
+        };
+
+        function loadGame() {
+            const saved = localStorage.getItem(SAVE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    state.cash = parsed.cash || 0;
+                    state.totalServed = parsed.totalServed || 0;
+                    state.totalCorrect = parsed.totalCorrect || 0;
+                    state.history = parsed.history || [];
+                } catch (e) {
+                    console.error("Save file corrupted, using defaults");
+                }
+            }
+            updateCashDisplay();
+        }
+
+        function saveGame() {
+            const dataToSave = {
+                cash: state.cash,
+                totalServed: state.totalServed,
+                totalCorrect: state.totalCorrect,
+                history: state.history
+            };
+            localStorage.setItem(SAVE_KEY, JSON.stringify(dataToSave));
+        }
+
+        function resetSaveData() {
+            if(confirm("Are you sure? This will delete all progress.")) {
+                localStorage.removeItem(SAVE_KEY);
+                location.reload();
+            }
+        }
+
+        const ui = {
+            counter: document.getElementById('customer-view'),
+            kitchen: document.getElementById('prep-view'),
+            tabCounter: document.getElementById('tab-counter'),
+            tabKitchen: document.getElementById('tab-kitchen'),
+            cup: document.getElementById('cup-container'),
+            face: document.getElementById('face'),
+            nameTag: document.getElementById('customer-name-tag'),
+            orderName: document.getElementById('order-name'),
+            mood: document.getElementById('mood-text'),
+            cash: document.getElementById('cash-display'),
+            profileOverlay: document.getElementById('profile-overlay'),
+            helpOverlay: document.getElementById('help-overlay'),
+            recipeList: document.getElementById('recipe-list'),
+            historyList: document.getElementById('history-list'),
+            stats: {
+                rank: document.getElementById('stat-rank'),
+                acc: document.getElementById('stat-accuracy'),
+                served: document.getElementById('stat-served')
+            }
+        };
+
+        function init() {
+            loadGame();
+
+            let html = '';
+            for(let [name, ingredients] of Object.entries(RECIPES)) {
+                let dispIng = ingredients.map(i => i === 'Espresso' ? 'Espresso (1/2/3)' : i).join(' + ');
+                html += `
+                <div class="recipe-row">
+                    <span><b>${name}</b></span>
+                    <span>${dispIng}</span>
+                </div>`;
+            }
+            ui.recipeList.innerHTML = html;
+            nextCustomer();
+        }
+
+        function setMode(mode) {
+            state.currentView = mode;
+            if (mode === 'counter') {
+                ui.counter.classList.remove('hidden');
+                ui.kitchen.classList.add('hidden');
+                ui.tabCounter.classList.add('active');
+                ui.tabKitchen.classList.remove('active');
+            } else {
+                ui.counter.classList.add('hidden');
+                ui.kitchen.classList.remove('hidden');
+                ui.tabCounter.classList.remove('active');
+                ui.tabKitchen.classList.add('active');
+            }
+        }
+
+        function toggleMode() {
+            if (state.currentView === 'counter') setMode('kitchen');
+            else setMode('counter');
+        }
+
+        function toggleOverlay(type) {
+            const overlay = type === 'profile' ? ui.profileOverlay : ui.helpOverlay;
+            const isVis = overlay.classList.contains('visible');
+            
+            ui.profileOverlay.classList.remove('visible');
+            ui.helpOverlay.classList.remove('visible');
+            
+            if (!isVis) {
+                overlay.classList.add('visible');
+                if(type === 'profile') updateProfileUI();
+            }
+        }
+
+        function updateCashDisplay() {
+            ui.cash.innerHTML = `$${state.cash.toFixed(2)} &#9662;`;
+        }
+
+        function updateProfileUI() {
+            let rank = "INTERN";
+            const m = state.cash;
+            if (m > 50) rank = "JUNIOR BARISTA";
+            if (m > 150) rank = "BARISTA";
+            if (m > 300) rank = "SHIFT LEAD";
+            if (m > 500) rank = "MANAGER";
+            if (m > 800) rank = "ARTISAN";
+            if (m > 1200) rank = "ROAST MASTER";
+            if (m > 2000) rank = "CAFFEINE MOGUL";
+            if (m > 3500) rank = "ESPRESSO TYCOON";
+            if (m > 5000) rank = "COFFEE GOD";
+
+            let acc = 0;
+            if (state.totalServed > 0) {
+                acc = Math.round((state.totalCorrect / state.totalServed) * 100);
+            }
+
+            ui.stats.rank.innerText = rank;
+            ui.stats.acc.innerText = acc + "%";
+            ui.stats.served.innerText = state.totalServed;
+
+            ui.historyList.innerHTML = '';
+            if (state.history.length === 0) {
+                ui.historyList.innerHTML = '<li class="history-item" style="justify-content:center;">No orders yet.</li>';
+                return;
+            }
+
+            [...state.history].reverse().forEach(h => {
+                const li = document.createElement('li');
+                li.className = `history-item ${h.win ? 'hist-win' : 'hist-loss'}`;
+                const sign = h.win ? '+' : '';
+                
+                li.innerHTML = `
+                    <div class="hist-face">${h.face || '(-)'}</div>
+                    <div class="hist-details">
+                        <span class="hist-name">${h.cName || 'Cust'}</span>
+                        <span class="hist-order">${h.name}</span>
+                    </div>
+                    <span>${sign}$${h.amt.toFixed(2)}</span>
+                `;
+                ui.historyList.appendChild(li);
+            });
+        }
+
+        function nextCustomer() {
+            state.cup = [];
+            renderCup();
+            state.running = true;
+
+            const names = Object.keys(RECIPES);
+            const pick = names[Math.floor(Math.random() * names.length)];
+            const baseSteps = RECIPES[pick];
+
+            const roasts = ['DK.Esp', 'MD.Esp', 'LT.Esp'];
+            const roastNames = {'DK.Esp': 'Dark', 'MD.Esp': 'Med', 'LT.Esp': 'Light'};
+            
+            const needsRoast = baseSteps.includes('Espresso');
+            let displayOrderName = pick;
+            let finalSteps = [];
+
+            if (needsRoast) {
+                const chosenRoast = roasts[Math.floor(Math.random() * roasts.length)];
+                finalSteps = baseSteps.map(s => s === 'Espresso' ? chosenRoast : s);
+                displayOrderName = `${roastNames[chosenRoast]} ${pick}`;
+            } else {
+                finalSteps = [...baseSteps];
+            }
+
+            state.target = { name: displayOrderName, steps: finalSteps };
+
+            ui.face.innerText = FACES_NEUTRAL[Math.floor(Math.random() * FACES_NEUTRAL.length)];
+            
+            const custName = NAMES[Math.floor(Math.random() * NAMES.length)];
+            state.currentCustomerName = custName;
+            ui.nameTag.innerText = custName;
+            
+            ui.mood.innerText = "Hello! Can I have a...";
+            ui.orderName.innerText = displayOrderName;
+            
+            setMode('counter');
+        }
+
+        function add(ingredient) {
+            if(ui.profileOverlay.classList.contains('visible') || 
+               ui.helpOverlay.classList.contains('visible')) return;
+               
+            if (!state.running) return;
+            if (state.cup.length >= 5) return;
+            state.cup.push(ingredient);
+            renderCup();
+        }
+
+        function clearCup() {
+            state.cup = [];
+            renderCup();
+        }
+
+        function renderCup() {
+            ui.cup.innerHTML = '';
+            state.cup.forEach(ing => {
+                const div = document.createElement('div');
+                div.className = 'ingredient-layer';
+                if (ing.includes('DK')) div.style.background = '#333';
+                if (ing.includes('DK')) div.style.color = 'white';
+                if (ing.includes('MD')) div.style.background = '#777';
+                if (ing.includes('MD')) div.style.color = 'white';
+                if (ing.includes('LT')) div.style.background = '#ddd';
+                
+                div.innerText = ing.toUpperCase();
+                ui.cup.appendChild(div);
+            });
+        }
+
+        function serve() {
+            if (!state.running) return;
+
+            const required = state.target.steps;
+            let correct = true;
+            
+            if (state.cup.length !== required.length) correct = false;
+            else {
+                for(let i=0; i<required.length; i++) {
+                    if (state.cup[i] !== required[i]) correct = false;
+                }
+            }
+
+            state.totalServed++;
+            let amt = 0;
+            let resultFace = "";
+
+            if (correct) {
+                state.totalCorrect++;
+                amt = 5.50;
+                state.cash += amt;
+                ui.mood.innerText = "PERFECT!";
+                ui.orderName.innerText = "Thanks! (+$5.50)";
+                resultFace = FACES_HAPPY[Math.floor(Math.random() * FACES_HAPPY.length)];
+            } else {
+                amt = 2.00;
+                state.cash -= amt;
+                ui.mood.innerText = "GROSS.";
+                ui.orderName.innerText = "I'm leaving. (-$2.00)";
+                resultFace = FACES_SAD[Math.floor(Math.random() * FACES_SAD.length)];
+            }
+
+            ui.face.innerText = resultFace;
+
+            state.history.push({ 
+                name: state.target.name, 
+                win: correct, 
+                amt: amt,
+                cName: state.currentCustomerName,
+                face: resultFace
+            });
+
+            if(state.history.length > 15) state.history.shift();
+            
+            saveGame();
+            updateCashDisplay();
+            
+            state.running = false;
+            setMode('counter');
+
+            setTimeout(() => { if(!state.running) nextCustomer(); }, 2000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            const overlayOpen = ui.profileOverlay.classList.contains('visible') || 
+                                ui.helpOverlay.classList.contains('visible');
+            
+            if(k === 'escape') {
+                ui.profileOverlay.classList.remove('visible');
+                ui.helpOverlay.classList.remove('visible');
+                return;
+            }
+
+            if(overlayOpen) return;
+
+            if(k === ' ') {
+                e.preventDefault();
+                toggleMode();
+            }
+            if(k === 'enter') serve();
+            if(k === 'backspace' || k === 'delete') clearCup();
+
+            if(['d','m','l','w','f','i','c','a','t'].includes(k)) setMode('kitchen');
+
+            if(k === '1') add('DK.Esp'); 
+            if(k === '2') add('MD.Esp'); 
+            if(k === '3') add('LT.Esp'); 
+            
+            if(k === 'm') add('Milk');
+            if(k === 'w') add('Water');
+            if(k === 'f') add('Foam');
+            if(k === 'i') add('Ice');
+            if(k === 'c') add('Chocolate');
+            if(k === 'a') add('Caramel');
+            if(k === 't') add('Matcha');
+            if(k === 'h') add('Chai');
+        });
+
+        init();
+    </script>
+</body>
+</html>
