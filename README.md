@@ -1,6 +1,6 @@
 # Minimal Cafe
 
-A high-contrast, text-based barista simulator designed for the **Minimal Phone** and E-Ink devices. Manage your inventory, memorize recipes, and serve procedurally generated customers in this distraction-free simulation game.
+A high-contrast, text-based barista simulator designed for the **Minimal Phone** and e-paper devices. Manage your inventory, memorize recipes, and serve procedurally generated customers in this distraction-free simulation game.
 
 ---
 
