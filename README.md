@@ -41,7 +41,7 @@ The game is fully playable via the physical keyboard, optimized for speed and mu
 | :--- | :--- |
 | <kbd>SPACE</kbd> | Customer ↔ Kitchen ↔ Storage |
 | <kbd>↵</kbd> | Serve drink |
-| <kbd>⌫</kbd> | Clear Cup |
+| <kbd>⌫</kbd> | Clearcup |
 | <kbd>ESC</kbd> | Close popups |
 
 ### Kitchen Ingredients
