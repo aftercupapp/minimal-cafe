@@ -57,7 +57,7 @@ The game is fully playable via the physical keyboard, optimized for speed and mu
 
 ## 🚀 Technical details
 
-* **Version:** `v0.1.14`
+* **Version:** `v0.1`
 * **Platform:** Web / Android WebView (Minimal Phone hardware optimized).
 * **Storage:** LocalStorage
 
