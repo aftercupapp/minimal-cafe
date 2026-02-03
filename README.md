@@ -39,19 +39,19 @@ The game is fully playable via the physical keyboard, optimized for speed and mu
 ### Navigation & Core
 | Key | Action |
 | :--- | :--- |
-| <kbd>SPACE</kbd> | Cycle Views (Customer ↔ Kitchen ↔ Storage) |
-| <kbd>↵</kbd> | **Serve** Drink |
-| <kbd>⌫</kbd> | **Trash** / Clear Cup |
-| <kbd>ESC</kbd> | Close Overlays (Help/Profile) |
+| <kbd>SPACE</kbd> | Customer ↔ Kitchen ↔ Storage |
+| <kbd>↵</kbd> | Serve drink |
+| <kbd>⌫</kbd> | Clear Cup |
+| <kbd>ESC</kbd> | Close popups |
 
 ### Kitchen Ingredients
 | Key | Ingredient | Key | Ingredient |
 | :--- | :--- | :--- | :--- |
 | <kbd>1</kbd> / <kbd>2</kbd> / <kbd>3</kbd> | Roasts (Light / Med / Dark) | <kbd>I</kbd> | **I**ce |
 | <kbd>M</kbd> / <kbd>W</kbd> | **M**ilk / **W**ater | <kbd>F</kbd> | **F**oam |
-| <kbd>C</kbd> / <kbd>A</kbd> | **C**hocolate / c**A**ramel | <kbd>T</kbd> | Matcha (**T**ea) |
+| <kbd>C</kbd> / <kbd>A</kbd> | **C**hocolate / c**A**ramel | <kbd>T</kbd> | Matcha |
 | <kbd>H</kbd> | C**h**ai | <kbd>N</kbd> | To**n**ic |
-| <kbd>B</kbd> / <kbd>K</kbd> | **B**atch Brew / **K**old Brew | | |
+| <kbd>B</kbd> / <kbd>K</kbd> | **B**atch Brew / Cold Brew | | |
 
 ---
 
