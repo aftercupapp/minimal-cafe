@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Minimal Cafe</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <style>
         :root {
             --bg: #ffffff;
@@ -372,7 +375,7 @@
         
         <button class="btn-full" onclick="navBack()">CLOSE PROFILE</button>
         <button class="btn-full btn-danger" onclick="resetSaveData()">RESET DATA</button>
-        <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; font-weight:bold; opacity: 0.4;">v0.1</div>
+        <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; font-weight:bold; opacity: 0.4;">v0.1.1</div>
     </div>
 
     <div id="help-overlay" class="overlay">
@@ -419,6 +422,8 @@
         </div>
 
         <br>
+        <button class="btn-full" onclick="window.open('https://github.com/aftercup-pure/minimal-cafe.git', '_blank')">GITHUB REPOSITORY</button>
+        <button class="btn-full" onclick="window.open('https://github.com/aftercup-pure/', '_blank')">PURE STORE</button>
         <button class="btn-full" onclick="navBack()">CLOSE HELP</button>
         <div style="height:50px;"></div>
     </div>
@@ -1084,6 +1089,11 @@
         });
 
         init();
+    </script>
+    <script>
+      if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('sw.js')
+      }
     </script>
 </body>
 </html>
